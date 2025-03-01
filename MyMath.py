@@ -1,0 +1,38 @@
+import math
+
+def SievePrimesToN(n):
+    if n < 2: return -1
+    
+    potential_primes = [i for i in range(0,n+1)]
+    potential_primes[1] = 0
+    for num in range(2,n+1):
+        if num == 0: continue
+        multiple = 2
+        while (num*multiple <= n):
+            potential_primes[multiple*num]=0
+            multiple+=1
+    
+    return [i for i in potential_primes if i >0]
+    
+def sumMultsToL(n, L):
+    #break multiples into pairs, multiply by the number of pairs
+    if n < 0: return -1
+    n_mults = math.floor(L/n)    
+    
+    pair_sum = n + n*n_mults
+    num_pairs = n_mults / 2
+  
+    return round(pair_sum * num_pairs)
+    
+def fibsToN(n):
+    if n< 1: return -1
+    if n == 1: return [1]
+    fibs = [1,2]
+    fib_next = 3
+    while (fib_next <= n):
+        fibs.append(fib_next)
+        fib_next = fibs[-1] + fibs[-2]
+    
+    return fibs
+   
+#print(sumMultsToL(3,100))
