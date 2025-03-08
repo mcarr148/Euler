@@ -22,7 +22,7 @@ jump_primes = []
 for p_perms in p_intersection:
     print(p_perms)
     for prime in p_perms:
-        if (prime+3330) in p_perms and (prime+3330*2) in p_perms and p_perms not in jump_primes:
+        if (prime+3330) in p_perms and (prime+3330*2) in p_perms and p_perms not in jump_primesf:
             jump_primes.append(p_perms)
             continue
 print(jump_primes)

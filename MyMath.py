@@ -1,18 +1,19 @@
 import math
+import numpy as np
 
 def sievePrimesToN(n):
     if n < 2: return -1
 
-    potential_primes = [i for i in range(0,n+1)]
-    potential_primes[1] = 0
-    for num in range(2,n+1):
-        if num == 0: continue
-        multiple = 2
-        while (num*multiple <= n):
-            potential_primes[multiple*num]=0
-            multiple+=1
+    potential_primes = np.ones(n+1, dtype = bool)
+    potential_primes[0:2] = False
 
-    return [i for i in potential_primes if i >0]
+    for num in range(2,int(n**.5)+1):
+        if potential_primes[num]:
+            potential_primes[num*num:n+1:num] = False
+
+    return np.flatnonzero(potential_primes).tolist()
+
+#print(len(sievePrimesToN(10**9)))
 
 def sumMultsToL(n, L):
     #break multiples into pairs, multiply by the number of pairs
@@ -57,6 +58,36 @@ def genPermutations(input_list, list_type):
         perms = [int(i) for i in perms]
 
     return perms
+
+primes_for_factorizing =[0]
+
+def prime_factorize(n):
+    #Trial division
+    if n == 0:
+        return 0
+    global primes_for_factorizing
+    if max(primes_for_factorizing) < math.ceil(n**.5):
+        primes_for_factorizing = sievePrimesToN(math.ceil(n**.5))
+    p_factors = {}
+    pos = 0
+    #print(primes_for_factorizing, len(primes_for_factorizing))
+    while(True):
+        #print(n)
+        #print(pos)
+        if n%primes_for_factorizing[pos] == 0:
+            p_factors[primes_for_factorizing[pos]] = 1 + p_factors.get(primes_for_factorizing[pos],0)
+            n = n//primes_for_factorizing[pos]
+        else:
+            pos+=1
+        if n == 1 or pos == len(primes_for_factorizing):
+            if len(primes_for_factorizing) == pos:
+                p_factors[n] = 1
+            break
+    #print(p_factors)
+    return p_factors
+
+#print(prime_factorize(123400))
+
 
 test =genPermutations([1,2,3,9],"num")
 #print(len(test))
